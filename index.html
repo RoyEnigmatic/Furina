@@ -1,91 +1,151 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Nút Tải Xuống Animation</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background: #111;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .download-btn {
-            background: linear-gradient(90deg, #1cb5e0, #000851);
-            border: none;
-            border-radius: 40px;
-            padding: 20px 60px;
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.15s;
-        }
-        .download-btn:active {
-            transform: scale(0.96);
-        }
-        .icon {
-            margin-right: 16px;
-            animation: bounce 1.2s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0);}
-            50% { transform: translateY(10px);}
-        }
-        .ripple {
-            position: absolute;
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple 0.6s linear;
-            background: rgba(255,255,255,0.5);
-            pointer-events: none;
-        }
-        @keyframes ripple {
-            to {
-                transform: scale(2.5);
-                opacity: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nút Chuyển Trang Lấp Lánh</title>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg,#e0e7ff,#fffde4 70%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+    .sparkle-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 18px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #6dd5ed, #fcb69f, #70e1f5 90%);
+      color: #fff;
+      box-shadow: 0 0 28px 0 rgba(52,152,219,0.3), 0 2px 8px rgba(0,0,0,0.07);
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+      transition: transform 0.12s, box-shadow 0.16s;
+      z-index: 1;
+    }
+    .sparkle-btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 0 10px #70e1f5;
+    }
+    .sparkle-btn .material-icons {
+      font-size: 2rem;
+      animation: icon-shine 2.1s linear infinite;
+    }
+    /* Sparkle shine effect */
+    .sparkle-btn::before {
+      content: "";
+      position: absolute;
+      left: -75%;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.55) 90%);
+      transform: skewX(-25deg);
+      filter: blur(1.3px);
+      animation: sparkle-move 2.7s infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+    @keyframes sparkle-move {
+      0%   { left: -75%; }
+      70%  { left: 110%; }
+      100% { left: 110%; }
+    }
+    @keyframes icon-shine {
+      0%   { color: #fff; text-shadow: 0 0 6px #fff9, 0 0 16px #fcb69f55; }
+      40%  { color: #fffecb; text-shadow: 0 0 10px #ffe,0 0 30px #fffde4a0;}
+      80%  { color: #fff; text-shadow: 0 0 10px #fff9,0 0 20px #6dd5ed70;}
+      100% { color: #fff; text-shadow: 0 0 6px #fff9,0 0 16px #fcb69f55;}
+    }
+    /* Loader overlay */
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.82);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+      z-index: 99;
+    }
+    .loader {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: -60px;
+    }
+    .loader .material-icons {
+      font-size: 54px;
+      color: #3f51b5;
+      animation: spin 0.95s linear infinite;
+      filter: drop-shadow(0 0 10px #70e1f5aa);
+    }
+    .loader-text {
+      color: #444;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-top: 10px;
+      animation: fadein 0.6s;
+    }
+    @keyframes spin {
+      100% { transform: rotate(360deg);}
+    }
+    @keyframes fadein {
+      from { opacity: 0;}
+      to { opacity: 1;}
+    }
+    @media (max-width: 500px) {
+      .container { gap: 18px;}
+      .sparkle-btn { font-size: 1rem; padding: 12px 22px;}
+      .loader .material-icons { font-size: 44px;}
+    }
+  </style>
 </head>
 <body>
-    <button class="download-btn" id="downloadBtn">
-        <span class="icon"></span>
-        Tìm hiểu thêm về trang web của tôi
+  <div class="container">
+    <button class="sparkle-btn" id="gotoBtn">
+      <span class="material-icons">Tìm hiểu thêm</span>
+      về trang của tôi
     </button>
-
-    <script>
-        const btn = document.getElementById("downloadBtn");
-        btn.addEventListener("click", function(e) {
-            // Hiệu ứng ripple
-            const circle = document.createElement("span");
-            const rect = btn.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            circle.className = "ripple";
-            circle.style.width = circle.style.height = size + "px";
-            circle.style.left = (e.clientX - rect.left - size/2) + "px";
-            circle.style.top = (e.clientY - rect.top - size/2) + "px";
-            btn.appendChild(circle);
-
-            setTimeout(() => {
-                // Chuyển trang sau animation
-                href = "ngochoangdzz.github.io/118/"; // Đổi sang link bạn muốn!
-            }, 400);
-
-            // Xoá hiệu ứng ripple sau khi chuyển trang (phòng trường hợp trang load chậm)
-            setTimeout(() => {
-                circle.remove();
-            }, 800);
-        });
-    </script>
+    <!-- Loader overlay ẩn mặc định -->
+    <div class="loader-overlay" id="loaderOverlay" style="display:none;">
+      <div class="loader">
+        <span class="material-icons">autorenew</span>
+        <div class="loader-text">Đang chuyển hướng...</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const btn = document.getElementById('gotoBtn');
+    const overlay = document.getElementById('loaderOverlay');
+    btn.addEventListener('click', () => {
+      overlay.style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = 'https://ngochoangdzz.github.io/118/';
+      }, 1700);
+    });
+  </script>
 </body>
 </html>
